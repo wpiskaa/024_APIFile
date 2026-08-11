@@ -6,13 +6,13 @@ const Penulis = db.Penulis;
 
 async function register(req, res) {
   try {
-    const nama = req.body.nama || req.body.username;
     const email = req.body.email;
     const password = req.body.password;
+    const nama = req.body.nama || req.body.username || (email ? email.split('@')[0] : 'Penulis');
 
-    if (!nama || !email || !password) {
+    if (!email || !password) {
       return res.status(400).json({
-        message: "Nama, email, dan password wajib diisi."
+        message: "Email dan password wajib diisi."
       });
     }
 
