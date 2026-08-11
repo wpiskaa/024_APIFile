@@ -1,16 +1,15 @@
-# 024_APIFile - Web Service API Komik, Genre, Penulis
+# 024_APIFile - Dokumentasi API Komik, Genre & Penulis
 
-Repository ini merupakan tugas Web Service API (**024_APIFile**) yang dibuat menggunakan Express.js, Sequelize ORM (PostgreSQL dengan fallback SQLite), JWT Authentication, serta Multer untuk unggah gambar komik.
+REST API untuk manajemen data Komik, Genre, dan Penulis dengan autentikasi JWT, file upload cover komik via Multer, dan ORM Sequelize (PostgreSQL / SQLite).
 
 ---
 
-## 🛠️ Instalasi & Menjalankan Project
+## 🛠️ Setup & Cara Menjalankan Project
 
 1. Install dependencies:
    ```bash
    npm install
    ```
-
 2. Jalankan server:
    ```bash
    npm start
@@ -19,154 +18,142 @@ Repository ini merupakan tugas Web Service API (**024_APIFile**) yang dibuat men
 
 ---
 
-## 🚀 Panduan Step-by-Step Pengujian Postman
+## 🚀 Langkah-Langkah Pengujian Postman
 
-Berikut adalah detail lengkap URL, Method, Body, Header, dan Auth yang digunakan di Postman untuk masing-masing request:
-
-### 1. Register Penulis (User)
-- **Method**: `POST`
-- **URL**: `http://localhost:3000/api/register`
-- **Headers**:
-  - `Content-Type`: `application/json`
-- **Body** (`raw` - `JSON`):
-  ```json
-  {
-    "nama": "Zidane Alhakim",
-    "email": "ac6@gmail.com",
-    "password": "12345"
+### 1. Register Penulis
+**Endpoint**: `POST http://localhost:3000/api/register`  
+**Headers**: `Content-Type: application/json`  
+**Request Body** (`raw` - `JSON`):
+```json
+{
+  "email": "ac6@gmail.com",
+  "password": "12345"
+}
+```
+**Response (201 Created)**:
+```json
+{
+  "message": "Registrasi berhasil.",
+  "data": {
+    "id": 1,
+    "email": "ac6@gmail.com"
   }
-  ```
+}
+```
+![POST REGISTER](screenshot/POST%20REGISTER.png)
+
+---
 
 ### 2. Login Penulis
-- **Method**: `POST`
-- **URL**: `http://localhost:3000/api/login`
-- **Headers**:
-  - `Content-Type`: `application/json`
-- **Body** (`raw` - `JSON`):
-  ```json
-  {
-    "email": "ac6@gmail.com",
-    "password": "12345"
-  }
-  ```
-- **Catatan**: Salin nilai `token` dari response JSON untuk digunakan pada request berikutnya di bagian **Authorization**.
+**Endpoint**: `POST http://localhost:3000/api/login`  
+**Headers**: `Content-Type: application/json`  
+**Request Body** (`raw` - `JSON`):
+```json
+{
+  "email": "ac6@gmail.com",
+  "password": "12345"
+}
+```
+**Response (200 OK)**:
+```json
+{
+  "message": "Login berhasil.",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+*Copy isi token, paste di bagian Authorization pada Postman dan pastikan memilih **Bearer Token**.*
+![LOGIN PENULIS](screenshot/LOGIN%20PENULIS.png)
 
 ---
-
-### 🔑 Pengaturan Authorization Token untuk Endpoint Berikutnya
-Pada Postman tab **Authorization**:
-- **Type**: `Bearer Token`
-- **Token**: `<Paste Token Hasil Login>`
-
----
-
-### 3. Tambah Genre (Post Genre)
-- **Method**: `POST`
-- **URL**: `http://localhost:3000/api/genre`
-- **Auth**: `Bearer Token`
-- **Headers**:
-  - `Content-Type`: `application/json`
-- **Body** (`raw` - `JSON`):
-  ```json
-  {
-    "nama": "Aksi",
-    "deskripsi": "Genre komik penuh pertarungan dan petualangan"
-  }
-  ```
-
-### 4. Ambil Daftar Genre (Get Genre)
-- **Method**: `GET`
-- **URL**: `http://localhost:3000/api/genre`
-- **Auth**: `Bearer Token`
-
-### 5. Update Genre (Put Genre)
-- **Method**: `PUT`
-- **URL**: `http://localhost:3000/api/genre/1`
-- **Auth**: `Bearer Token`
-- **Headers**:
-  - `Content-Type`: `application/json`
-- **Body** (`raw` - `JSON`):
-  ```json
-  {
-    "nama": "Aksi & Petualangan",
-    "deskripsi": "Genre komik seru dan penuh aksi hebat"
-  }
-  ```
-
-### 6. Hapus Genre (Delete Genre)
-- **Method**: `DELETE`
-- **URL**: `http://localhost:3000/api/genre/1`
-- **Auth**: `Bearer Token`
-
----
-
-### 7. Tambah Komik (Post Komik)
-- **Method**: `POST`
-- **URL**: `http://localhost:3000/api/komik`
-- **Auth**: `Bearer Token`
-- **Body** (`form-data` / `x-www-form-urlencoded` / `raw JSON`):
-  - `judul`: `Naruto`
-  - `sinopsis`: `Cerita seorang ninja yang bercita-cita menjadi Hokage.`
-  - `tahun_terbit`: `1999`
-  - `penulis_id`: `1`
-  - `genre_ids`: `[1, 2]`
-  - `gambar` *(File)*: Pilih file gambar komik (`.jpg` / `.png`)
-
-### 8. Ambil Daftar Komik (Get Komik)
-- **Method**: `GET`
-- **URL**: `http://localhost:3000/api/komik`
-- **Auth**: `Bearer Token`
-
-### 9. Update Komik (Put Komik)
-- **Method**: `PUT`
-- **URL**: `http://localhost:3000/api/komik/1`
-- **Auth**: `Bearer Token`
-- **Body** (`raw` - `JSON` / `form-data`):
-  ```json
-  {
-    "judul": "Naruto Shippuden",
-    "sinopsis": "Lanjutan perjalanan Naruto berlatih bersama Jiraiya.",
-    "tahun_terbit": 2007,
-    "penulis_id": 1,
-    "genre_ids": [1]
-  }
-  ```
-
-### 10. Hapus Komik (Delete Komik)
-- **Method**: `DELETE`
-- **URL**: `http://localhost:3000/api/komik/1`
-- **Auth**: `Bearer Token`
-
----
-
-## 📸 Screenshots Hasil Pengujian Postman
-
-### 1. Post Register
-![Post Register](screenshots/post_register.png)
-
-### 2. Post Login
-![Post Login](screenshots/post_login.png)
 
 ### 3. Post Komik
-![Post Komik](screenshots/post_komik.png)
+**Endpoint**: `POST http://localhost:3000/api/komik`  
+**Authorization**: `Bearer Token`  
+**Headers**: `Content-Type: application/json` (atau multipart `form-data` untuk upload gambar)  
+**Request Body** (`raw` - `JSON`):
+```json
+{
+  "judul": "Naruto",
+  "sinopsis": "Cerita seorang ninja yang bercita-cita menjadi Hokage.",
+  "tahun_terbit": 1999,
+  "penulis_id": 1,
+  "genre_ids": [1, 2]
+}
+```
+![POST KOMIK](screenshot/POST%20KOMIK.png)
+
+---
 
 ### 4. Get Komik
-![Get Komik](screenshots/get_komik.png)
+**Endpoint**: `GET http://localhost:3000/api/komik`  
+**Authorization**: `Bearer Token`  
+![GET KOMIK](screenshot/GET%20KOMIK.png)
+
+---
 
 ### 5. Put Komik
-![Put Komik](screenshots/put_komik.png)
+**Endpoint**: `PUT http://localhost:3000/api/komik/1`  
+**Authorization**: `Bearer Token`  
+**Headers**: `Content-Type: application/json`  
+**Request Body** (`raw` - `JSON`):
+```json
+{
+  "judul": "Naruto Shippuden",
+  "sinopsis": "Lanjutan petualangan ninja Naruto.",
+  "tahun_terbit": 2007,
+  "penulis_id": 1,
+  "genre_ids": [1]
+}
+```
+![PUT KOMIK](screenshot/PUT%20KOMIK.png)
+
+---
 
 ### 6. Delete Komik
-![Delete Komik](screenshots/delete_komik.png)
+**Endpoint**: `DELETE http://localhost:3000/api/komik/1`  
+**Authorization**: `Bearer Token`  
+![DELETE KOMIK](screenshot/DELETE%20KOMIK.png)
+
+---
 
 ### 7. Post Genre
-![Post Genre](screenshots/post_genre.png)
+**Endpoint**: `POST http://localhost:3000/api/genre`  
+**Authorization**: `Bearer Token`  
+**Headers**: `Content-Type: application/json`  
+**Request Body** (`raw` - `JSON`):
+```json
+{
+  "nama": "Aksi",
+  "deskripsi": "Genre pertarungan dan aksi seru"
+}
+```
+![POST GENRE](screenshot/POST%20GENRE.png)
+
+---
 
 ### 8. Get Genre
-![Get Genre](screenshots/get_genre.png)
+**Endpoint**: `GET http://localhost:3000/api/genre`  
+**Authorization**: `Bearer Token`  
+![GET GENRE](screenshot/GET%20GENRE.png)
+
+---
 
 ### 9. Put Genre
-![Put Genre](screenshots/put_genre.png)
+**Endpoint**: `PUT http://localhost:3000/api/genre/1`  
+**Authorization**: `Bearer Token`  
+**Headers**: `Content-Type: application/json`  
+**Request Body** (`raw` - `JSON`):
+```json
+{
+  "nama": "Aksi & Petualangan",
+  "deskripsi": "Genre pertarungan penuh petualangan"
+}
+```
+![UPDATE GENRE](screenshot/UPDATE%20GENRE.png)
+
+---
 
 ### 10. Delete Genre
-![Delete Genre](screenshots/delete_genre.png)
+**Endpoint**: `DELETE http://localhost:3000/api/genre/1`  
+**Authorization**: `Bearer Token`  
+![DELETE GENRE](screenshot/DELETE%20GENRE.png)
