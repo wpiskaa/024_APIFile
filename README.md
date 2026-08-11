@@ -40,7 +40,7 @@ REST API untuk manajemen data Komik, Genre, dan Penulis dengan autentikasi JWT, 
   }
 }
 ```
-![POST REGISTER](screenshot/POST%20REGISTER.png)
+![POST REGISTER](screenshot/Screenshot%202026-08-11%20201721.png)
 
 ---
 
@@ -62,32 +62,32 @@ REST API untuk manajemen data Komik, Genre, dan Penulis dengan autentikasi JWT, 
 }
 ```
 *Copy isi token, paste di bagian Authorization pada Postman dan pastikan memilih **Bearer Token**.*
-![LOGIN PENULIS](screenshot/LOGIN%20PENULIS.png)
+![LOGIN PENULIS](screenshot/Screenshot%202026-08-11%20201748.png)
 
 ---
 
 ### 3. Post Komik
 **Endpoint**: `POST http://localhost:3000/api/komik`  
 **Authorization**: `Bearer Token`  
-**Headers**: `Content-Type: application/json` (atau multipart `form-data` untuk upload gambar)  
+**Headers**: `Content-Type: application/json`  
 **Request Body** (`raw` - `JSON`):
 ```json
 {
   "judul": "Naruto",
-  "sinopsis": "Cerita seorang ninja yang bercita-cita menjadi Hokage.",
+  "sinopsis": "Cerita seorang ninja yang bercita cita menjadi Hokage.",
   "tahun_terbit": 1999,
   "penulis_id": 1,
   "genre_ids": [1, 2]
 }
 ```
-![POST KOMIK](screenshot/POST%20KOMIK.png)
+![POST KOMIK](screenshot/Screenshot%202026-08-11%20201845.png)
 
 ---
 
 ### 4. Get Komik
 **Endpoint**: `GET http://localhost:3000/api/komik`  
 **Authorization**: `Bearer Token`  
-![GET KOMIK](screenshot/GET%20KOMIK.png)
+![GET KOMIK](screenshot/Screenshot%202026-08-11%20203839.png)
 
 ---
 
@@ -105,14 +105,14 @@ REST API untuk manajemen data Komik, Genre, dan Penulis dengan autentikasi JWT, 
   "genre_ids": [1]
 }
 ```
-![PUT KOMIK](screenshot/PUT%20KOMIK.png)
+![PUT KOMIK](screenshot/Screenshot%202026-08-11%20204157.png)
 
 ---
 
 ### 6. Delete Komik
 **Endpoint**: `DELETE http://localhost:3000/api/komik/1`  
 **Authorization**: `Bearer Token`  
-![DELETE KOMIK](screenshot/DELETE%20KOMIK.png)
+![DELETE KOMIK](screenshot/Screenshot%202026-08-11%20204239.png)
 
 ---
 
@@ -127,14 +127,14 @@ REST API untuk manajemen data Komik, Genre, dan Penulis dengan autentikasi JWT, 
   "deskripsi": "Genre pertarungan dan aksi seru"
 }
 ```
-![POST GENRE](screenshot/POST%20GENRE.png)
+![POST GENRE](screenshot/Screenshot%202026-08-11%20204310.png)
 
 ---
 
 ### 8. Get Genre
 **Endpoint**: `GET http://localhost:3000/api/genre`  
 **Authorization**: `Bearer Token`  
-![GET GENRE](screenshot/GET%20GENRE.png)
+![GET GENRE](screenshot/Screenshot%202026-08-11%20204326.png)
 
 ---
 
@@ -149,11 +149,11 @@ REST API untuk manajemen data Komik, Genre, dan Penulis dengan autentikasi JWT, 
   "deskripsi": "Genre pertarungan penuh petualangan"
 }
 ```
-![UPDATE GENRE](screenshot/UPDATE%20GENRE.png)
+![UPDATE GENRE](screenshot/Screenshot%202026-08-11%20204341.png)
 
 ---
 
 ### 10. Delete Genre
 **Endpoint**: `DELETE http://localhost:3000/api/genre/1`  
 **Authorization**: `Bearer Token`  
-![DELETE GENRE](screenshot/DELETE%20GENRE.png)
+![DELETE GENRE](screenshot/Screenshot%202026-08-11%20204352.png)
