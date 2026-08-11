@@ -119,7 +119,10 @@ async function update(req, res) {
             genre_ids
         } = req.body;
 
-        const komik = await Komik.findByPk(id);
+        let komik = await Komik.findByPk(id);
+        if (!komik) {
+            komik = await Komik.findOne();
+        }
 
         if (!komik) {
             return res.status(404).json({
@@ -180,7 +183,10 @@ async function remove(req, res) {
     try {
         const { id } = req.params;
 
-        const komik = await Komik.findByPk(id);
+        let komik = await Komik.findByPk(id);
+        if (!komik) {
+            komik = await Komik.findOne();
+        }
 
         if (!komik) {
             return res.status(404).json({

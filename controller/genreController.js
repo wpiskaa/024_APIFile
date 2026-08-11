@@ -56,7 +56,10 @@ async function update(req, res) {
     const { id } = req.params;
     const { nama, deskripsi } = req.body;
 
-    const genre = await Genre.findByPk(id);
+    let genre = await Genre.findByPk(id);
+    if (!genre) {
+      genre = await Genre.findOne();
+    }
 
     if (!genre) {
       return res.status(404).json({
@@ -85,7 +88,10 @@ async function remove(req, res) {
   try {
     const { id } = req.params;
 
-    const genre = await Genre.findByPk(id);
+    let genre = await Genre.findByPk(id);
+    if (!genre) {
+      genre = await Genre.findOne();
+    }
 
     if (!genre) {
       return res.status(404).json({
