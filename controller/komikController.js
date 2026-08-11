@@ -97,7 +97,7 @@ async function create(req, res) {
 
         return res.status(201).json({
             message: "Komik berhasil ditambahkan.",
-            data: result
+            data: result || komik
         });
 
     } catch (error) {
@@ -166,7 +166,7 @@ async function update(req, res) {
 
         return res.status(200).json({
             message: "Komik berhasil diperbarui.",
-            data: result
+            data: result || komik
         });
 
     } catch (error) {
