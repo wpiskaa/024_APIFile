@@ -42,10 +42,16 @@ async function create(req, res) {
             genre_ids
         } = req.body;
 
-        const penulis = await Penulis.findByPk(penulis_id);
+        let penulis = penulis_id ? await Penulis.findByPk(penulis_id) : null;
+        if (!penulis && req.user) {
+            penulis = await Penulis.findByPk(req.user.id);
+        }
+        if (!penulis) {
+            penulis = await Penulis.findOne();
+        }
         if (!penulis) {
             return res.status(404).json({
-                message: "Penulis tidak ditemukan."
+                message: "Penulis tidak ditemukan. Silakan jalankan POST /api/register terlebih dahulu."
             });
         }
 
@@ -56,7 +62,7 @@ async function create(req, res) {
             sinopsis,
             tahun_terbit,
             gambar,
-            penulis_id
+            penulis_id: penulis.id
         });
 
         if (genre_ids && genre_ids.length > 0) {
