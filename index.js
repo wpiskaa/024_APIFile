@@ -31,6 +31,7 @@ const startServer = async () => {
       await sequelize.query('CREATE TABLE IF NOT EXISTS penulis (id SERIAL PRIMARY KEY, nama VARCHAR(255), email VARCHAR(255) UNIQUE, password VARCHAR(255), "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);');
       await sequelize.query('CREATE TABLE IF NOT EXISTS genre (id SERIAL PRIMARY KEY, nama VARCHAR(255), deskripsi TEXT, "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);');
       await sequelize.query('CREATE TABLE IF NOT EXISTS komik (id SERIAL PRIMARY KEY, judul VARCHAR(255), sinopsis TEXT, deskripsi TEXT, pengarang VARCHAR(255), penerbit VARCHAR(255), tahun_terbit INTEGER, gambar VARCHAR(255), genre_id INTEGER, penulis_id INTEGER, "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);');
+      await sequelize.query('CREATE TABLE IF NOT EXISTS komik_genre (komik_id INTEGER, genre_id INTEGER, "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (komik_id, genre_id));');
 
       await sequelize.query("SELECT setval('penulis_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM penulis), false);");
       await sequelize.query("SELECT setval('genre_id_seq', (SELECT COALESCE(MAX(id), 0) + 1 FROM genre), false);");
@@ -40,9 +41,6 @@ const startServer = async () => {
     }
 
     try {
-      if (Penulis && typeof Penulis.sync === 'function') await Penulis.sync();
-      if (Genre && typeof Genre.sync === 'function') await Genre.sync();
-      if (Komik && typeof Komik.sync === 'function') await Komik.sync();
       await sequelize.sync();
       console.log('Database synchronized successfully.');
     } catch (syncErr) {
