@@ -72,7 +72,11 @@ async function create(req, res) {
                 }
             });
 
-            await komik.setGenre(genres);
+            if (typeof komik.setGenre === 'function') {
+                await komik.setGenre(genres);
+            } else if (typeof komik.setGenres === 'function') {
+                await komik.setGenres(genres);
+            }
         }
 
         const result = await Komik.findByPk(komik.id, {
@@ -137,7 +141,11 @@ async function update(req, res) {
                 }
             });
 
-            await komik.setGenre(genres);
+            if (typeof komik.setGenre === 'function') {
+                await komik.setGenre(genres);
+            } else if (typeof komik.setGenres === 'function') {
+                await komik.setGenres(genres);
+            }
         }
 
         const result = await Komik.findByPk(id, {
