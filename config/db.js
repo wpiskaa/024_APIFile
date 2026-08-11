@@ -6,6 +6,14 @@ const configEnv = require('./config')[process.env.NODE_ENV || 'development'];
 
 let sequelizeInstance = null;
 
+const createSqliteFallback = () => {
+  return new Sequelize({
+    dialect: 'sqlite',
+    storage: './database.sqlite',
+    logging: false
+  });
+};
+
 const ensureDatabaseExists = async () => {
   const passwordToUse = process.env.DB_PASS || process.env.DB_PASSWORD || configEnv.password;
   try {
@@ -30,7 +38,7 @@ const ensureDatabaseExists = async () => {
 
     await client.end();
 
-    sequelizeInstance = new Sequelize(
+    const pgSequelize = new Sequelize(
       configEnv.database,
       configEnv.username,
       passwordToUse,
@@ -41,37 +49,19 @@ const ensureDatabaseExists = async () => {
         logging: false
       }
     );
+
+    await pgSequelize.authenticate();
+    sequelizeInstance = pgSequelize;
+    console.log('PostgreSQL connected successfully.');
   } catch (error) {
-    console.warn(`[DB Notice] PostgreSQL connection attempt (${error.message}). Using fallback connection...`);
-    sequelizeInstance = new Sequelize({
-      dialect: 'sqlite',
-      storage: './database.sqlite',
-      logging: false
-    });
+    console.warn(`[DB Notice] PostgreSQL connection attempt failed (${error.message}). Switching to SQLite fallback...`);
+    sequelizeInstance = createSqliteFallback();
   }
 };
 
 const getSequelize = () => {
   if (!sequelizeInstance) {
-    try {
-      sequelizeInstance = new Sequelize(
-        configEnv.database,
-        configEnv.username,
-        process.env.DB_PASS || process.env.DB_PASSWORD || configEnv.password,
-        {
-          host: configEnv.host,
-          port: configEnv.port,
-          dialect: configEnv.dialect,
-          logging: false
-        }
-      );
-    } catch (e) {
-      sequelizeInstance = new Sequelize({
-        dialect: 'sqlite',
-        storage: './database.sqlite',
-        logging: false
-      });
-    }
+    sequelizeInstance = createSqliteFallback();
   }
   return sequelizeInstance;
 };
